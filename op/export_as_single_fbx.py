@@ -63,7 +63,7 @@ class single_file_exporter(bpy.types.Operator):
                 use_selection=True,
                 axis_forward="Z",
                 axis_up="Y",
-                global_scale=1.0,
+                global_scale=1,
                 apply_unit_scale=True,
                 bake_anim=False,
             )
