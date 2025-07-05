@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import EnumProperty, IntProperty, StringProperty, PointerProperty
+from bpy.props import EnumProperty, IntProperty, StringProperty, PointerProperty, BoolProperty
 import importlib
 import os
 import traceback
@@ -73,6 +73,27 @@ class export_formats(bpy.types.PropertyGroup):
         ],
         default="FBX"
     )
+
+    show_export_options: BoolProperty(
+        name="Show Export Options",
+        description="Toggle visibility of advanced export options",
+        default=False
+    )
+###########################GENERAL OPTIONS###########################
+
+
+
+
+##########################FBX ONLY OPTIONS##########################
+
+
+
+##########################OBJ ONLY OPTIONS##########################
+
+
+
+##########################GLTF ONLY OPTIONS#########################
+
 
 
 

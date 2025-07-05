@@ -37,33 +37,73 @@ def draw_export_tools(layout, context):
     props = scene.gm_props
     exp_settings = scene.export_settings
     
-    
+
     export_box = layout.box()
     export_box.label(text="Export selection as multiple files")
+    
+    #Output folder selection
+    export_box.prop(props, "export_folder_path", text="Output Folder")
     
     #File format selection
     file_format_row=export_box.row(align=True)
     file_format_row.prop(exp_settings, "export_formats_selection", expand=True)
-
-    if exp_settings.export_formats_selection == 'FBX':
-        fbx_settings(layout, context)
-    elif exp_settings.export_formats_selection == 'OBJ':
-        obj_settings(layout, context)
-    elif exp_settings.export_formats_selection == 'GLTF':
-        gltf_settings(layout,context)
     
-    export_box.prop(props, "export_folder_path", text="Output Folder")
+    #Export operator
     export_box.operator("object.export_as_individual_files", icon="DISK_DRIVE_LARGE")
+    
+    #Options drop down menu
+    row = export_box.row(align=True)
+    
+    sub_row=row.row(align=True)
+    sub_row.alignment = "LEFT"
+    
+    sub_row.prop(exp_settings, "show_export_options",
+        text="",
+        icon="TRIA_DOWN" if exp_settings.show_export_options else "TRIA_RIGHT",
+        emboss=False
+    )
+    
+    sub_row.label(text="Export Options:")
+    
+    #Draw options only if drop down menu is open
+    if exp_settings.show_export_options:
+        sub_col = export_box.column(align=True)
+        sub_col.emboss="NONE"
+        
+        #Common options
+        common_options_col=sub_col.column(align=True)
+        common_options_col.label(text="Common options:")
+        
+        
+        #Specific options
+        specific_options_col=sub_col.column(align=True)
+        specific_options_col.label(text=f"{exp_settings.export_formats_selection.upper()} Format options:")
+            
+        
+        if exp_settings.export_formats_selection == 'FBX':
+            fbx_settings_draw(specific_options_col, context)
+        elif exp_settings.export_formats_selection == 'OBJ':
+            obj_settings_draw(specific_options_col, context)
+        elif exp_settings.export_formats_selection == 'GLTF':
+            gltf_settings_draw(specific_options_col,context)
+    
+    
 
 #=================Properties menu=============
-def fbx_settings(layout, context):
-    print("fbx")
-
-def obj_settings(layout, context):
-    print("obj")
+def fbx_settings_draw(layout, context):
+    exp_settings = context.scene.export_settings
     
-def gltf_settings(layout, context):
-    print("gltf")
+    layout.label(text="fbx")
+
+def obj_settings_draw(layout, context):
+    exp_settings = context.scene.export_settings
+    
+    layout.label(text="obj")
+    
+def gltf_settings_draw(layout, context):
+    exp_settings = context.scene.export_settings
+    
+    layout.label(text="gtlf")
 
 
 
