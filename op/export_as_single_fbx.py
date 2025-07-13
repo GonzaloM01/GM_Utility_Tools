@@ -37,7 +37,7 @@ class single_file_exporter(bpy.types.Operator):
             self.report({"WARNING"}, "You don't have any mesh selected")
             return {"FINISHED"}
         
-        #=====================Emparented objects count as 1 mesh=====================     
+        #=====================Prepare to export(In the future, will improve this section)=====================     
         objects_to_export = []
         
         for obj in selected_meshes:

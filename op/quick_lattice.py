@@ -251,6 +251,9 @@ class quick_lattice_base(bpy.types.Operator):
 ############################################################################
 #=========================EXTRA QUICK LATTICE===========================
 ############################################################################
+
+#Planned feature, still WIP
+
 class fast_quick_lattice(bpy.types.Operator):
     bl_idname = "object.fast_quick_lattice"
     bl_label = "EXTRA Quick Lattice"
