@@ -40,7 +40,6 @@ class GM_Addon_Properties(bpy.types.PropertyGroup):
         items=[
             ('MODELING', "Modeling", "Modeling Tools"),
             ('EXPORT', "Export", "Export Tools"),
-            ('OTHERS', "Others", "Others"),
         ],
         default="MODELING"
     )

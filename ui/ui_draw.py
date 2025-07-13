@@ -198,11 +198,6 @@ def draw_export_tools(layout, context):
         
 
 
-#==============================OTHERS TOOLS TAB DRAW=========================
-def draw_options_tools(layout, context):
-    layout.label(text="Others:")
-
-
 
 #===============================MAIN PANEL CREATION==============================
 class GM_tools_main_panel(bpy.types.Panel):
@@ -232,8 +227,7 @@ class GM_tools_main_panel(bpy.types.Panel):
             draw_modeling_tools(layout, context)
         elif props.gm_active_tab == 'EXPORT':
             draw_export_tools(layout, context)
-        elif props.gm_active_tab == 'OTHERS':
-            draw_others_tools(layout,context)
+
 
 
 
