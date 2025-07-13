@@ -9,3 +9,6 @@ __pycache__/
 
 #Visual studio code files
 .vscode/
+
+#gitignore
+.gitignore
