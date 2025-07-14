@@ -23,7 +23,7 @@ bl_info = {
     "name" : "GM's Utility Tools Panel",
     "author" : "Gonzalo Mundi",
     "version" : (0,1),
-    "blender" : (4,4,0),
+    "blender" : (4,2,0),
     "location" : "View3D > Sidebar",
     "description" : "Adds a viewport panel with different tools I use for my workflow",
     "category" : "GM Utility Tools"
