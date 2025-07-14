@@ -49,7 +49,7 @@ def draw_export_tools(layout, context):
     file_format_row.prop(exp_settings, "export_formats_selection", expand=True)
     
     #Export operator
-    export_box.operator("object.export_as_individual_files", icon="DISK_DRIVE_LARGE")
+    export_box.operator("object.export_as_individual_files", icon="DISK_DRIVE")
     
     #Options drop down menu
     row = export_box.row(align=True)
