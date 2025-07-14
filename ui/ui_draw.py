@@ -192,7 +192,26 @@ def draw_export_tools(layout, context):
             
             
             
-            
+######################INFO PANEL#######################
+def draw_info_panel(layout, context):
+    scene = context.scene
+    
+    info_box=layout.box()
+    info_box.label(text="This addon is still an early WIP")
+    info_box.label(text="Feedback or tool suggestions is welcome")
+    
+    row = info_box.row(align=True)
+    row.operator("wm.url_open", text="Github", icon="FILE_SCRIPT",).url="https://github.com/GonzaloM01/GM_Utility_Tools"
+    row2=info_box.row(align=True)
+    row2.operator("wm.url_open", text="BlenderArtists Post", icon="FILE_SCRIPT",).url="https://blenderartists.org/t/gm-utility-tools-general-tools-for-modeling-and-game-dev/1601727"
+    row3=info_box.row(align=True)
+    row3.operator("wm.url_open", text="Gumroad", icon="FILE_SCRIPT",).url="https://gonzalom3d.gumroad.com/l/gm_utility_tools"
+    row4=info_box.row(align=True)
+    row4.operator("wm.url_open", text="Twitter/X", icon="FILE_SCRIPT",).url="https://x.com/GonzaloM01"
+    
+    
+    
+              
             
         
         
@@ -227,6 +246,8 @@ class GM_tools_main_panel(bpy.types.Panel):
             draw_modeling_tools(layout, context)
         elif props.gm_active_tab == 'EXPORT':
             draw_export_tools(layout, context)
+            
+        draw_info_panel(layout, context)
 
 
 
