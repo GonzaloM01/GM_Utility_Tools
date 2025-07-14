@@ -60,6 +60,13 @@ class GM_Addon_Properties(bpy.types.PropertyGroup):
         subtype="DIR_PATH",
         default=""
     )
+    
+    #Show info
+    show_addon_info: BoolProperty(
+        name="Show Contact Info",
+        description="Toggle visibility Feedback/Contact info",
+        default=False
+    )
 
 #========================EXPORT OPTIONS PROPERTIES======================
 class export_formats(bpy.types.PropertyGroup):
@@ -76,7 +83,7 @@ class export_formats(bpy.types.PropertyGroup):
     show_export_options: BoolProperty(
         name="Show Export Options",
         description="Toggle visibility of advanced export options",
-        default=False
+        default=True
     )
 ###########################GENERAL OPTIONS###########################
     export_scale: FloatProperty(
