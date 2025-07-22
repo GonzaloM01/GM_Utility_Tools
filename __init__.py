@@ -12,10 +12,14 @@ from . import op
 #UI Classes import
 from .ui.ui_draw import GM_tools_main_panel
 
-#OP Classes import
-from .op.quick_pivot import quick_pivot_to_selection
-from .op.export_as_single_fbx import single_file_exporter
-from .op.quick_lattice import quick_lattice_base
+#OP Modeling import
+from .op.modeling_quick_pivot import quick_pivot_to_selection
+from .op.modeling_quick_lattice import quick_lattice_base
+
+#OP Export import
+from .op.export_single_files import single_file_exporter
+
+#OP Materials import
 from .op.materials_quick_vertex_color import quick_random_vertex_color
 
 
