@@ -1,7 +1,8 @@
 import bpy
 
-
+###################################################################################
 #==============================MODELING TOOLS TAB DRAW=========================
+###################################################################################
 def draw_modeling_tools(layout, context):
     scene = context.scene
     
@@ -17,7 +18,6 @@ def draw_modeling_tools(layout, context):
     lattice_box = layout.box()
     lattice_box.label(text="Lattice Tools")
     lattice_box.operator("object.quick_lattice_base", icon ="MESH_CUBE")
-    #lattice_box.operator("object.fast_quick_lattice", icon ="MOD_LATTICE")
     #Lattice selector
     row = lattice_box.row()
     row.prop(props, "lattice_divisions", text="Lattice Points")
@@ -28,8 +28,9 @@ def draw_modeling_tools(layout, context):
     modifiers_box = layout.box()
     modifiers_box.label(text="Apply All modifiers from Selection")
     """
-
+###################################################################################
 #==============================EXPORT TOOLS TAB DRAW=========================
+###################################################################################
 def draw_export_tools(layout, context):
     scene = context.scene
     
@@ -50,6 +51,11 @@ def draw_export_tools(layout, context):
     
     #Export operator
     export_box.operator("object.export_as_individual_files", icon="DISK_DRIVE")
+    #Sufix and Prefix
+    prefix_suffix_row=export_box.row(align=True)
+    prefix_suffix_row.prop(exp_settings, "mesh_export_name_prefix", text="")
+    prefix_suffix_row.label(text="+ Mesh Name +")
+    prefix_suffix_row.prop(exp_settings, "mesh_export_name_suffix", text="")
     
     #Options drop down menu
     row = export_box.row(align=True)
@@ -78,6 +84,10 @@ def draw_export_tools(layout, context):
             #Scale
             scale_row = common_options_box.row(align=True)
             scale_row.prop(exp_settings, "export_scale", text="Export scale %")
+        
+        #Move to 0,0,0 position
+        reset_position_row=common_options_box.row(align=True)
+        reset_position_row.prop(exp_settings, "exporter_move_to_0")
         
         #Apply modifiers?
         apply_modifiers_row=common_options_box.row(align=True)
@@ -174,9 +184,9 @@ def draw_export_tools(layout, context):
             split_vertex_color_gltf.label(text="Vertex Color Export")
             split_vertex_color_gltf.prop(exp_settings, "export_vertex_color", text="")
             
-            #gltf compression
-            gltfpack_compression_row=common_options_box.row(align=True)
-            gltfpack_compression_row.prop(exp_settings, "use_gltfpack_compression")
+            #draco compression
+            draco_compression_row=common_options_box.row(align=True)
+            draco_compression_row.prop(exp_settings, "use_draco_compression")
             
 
         
@@ -189,7 +199,26 @@ def draw_export_tools(layout, context):
             #Vertex color export
             vertex_color_obj_row=common_options_box.row(align=True)
             vertex_color_obj_row.prop(exp_settings, "obj_export_vc")
-            
+
+###################################################################################
+#==============================MATERIALS TOOLS TAB DRAW=========================
+###################################################################################
+
+def draw_material_tools(layout, context):
+    scene = context.scene
+    props = scene.gm_props
+    
+    vertex_colours_box = layout.box()
+    vertex_colours_box.label(text="Vertex Color Tools")
+    vertex_colours_box.operator("object.quick_random_vertex_color", icon="COLORSET_10_VEC")
+    
+    
+    
+    
+
+
+
+
             
             
 ######################INFO PANEL#######################
@@ -210,7 +239,7 @@ def draw_info_panel(layout, context):
         emboss=False
     )
     
-    sub_row.label(text="Feedback/Bug Report")
+    sub_row.label(text="Documentation/Bug Report")
     
     #Draw options only if drop down menu is open
     if props.show_addon_info:
@@ -229,6 +258,9 @@ def draw_info_panel(layout, context):
         row3.operator("wm.url_open", text="Gumroad", icon="FILE_SCRIPT",).url="https://gonzalom3d.gumroad.com/l/gm_utility_tools"
         row4=info_box.row(align=True)
         row4.operator("wm.url_open", text="Twitter/X", icon="FILE_SCRIPT",).url="https://x.com/GonzaloM01"
+        row5=info_box.row(align=True)
+        row5.label(text="Documentation")
+        row5.operator("wm.url_open", text="Documentation", icon="FILE_SCRIPT",).url="https://daffy-ixia-a22.notion.site/GM_Utility_Tools-Documentation-Blender-Addon-2329a0bdb7be80fe9c49c2470b2d7746?pvs=74"
     
     
     
@@ -251,11 +283,11 @@ class GM_tools_main_panel(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         
+        props = scene.gm_props
+        
         if not hasattr(scene, "gm_props"):
             layout.label(text="Loading(properties not found")
             return
-        
-        props = scene.gm_props
         
         #Debug message
         print("GM_tools_panel: Showing panel") 
@@ -265,6 +297,8 @@ class GM_tools_main_panel(bpy.types.Panel):
 
         if props.gm_active_tab == 'MODELING':
             draw_modeling_tools(layout, context)
+        elif props.gm_active_tab == 'MATERIALS':
+            draw_material_tools(layout, context)
         elif props.gm_active_tab == 'EXPORT':
             draw_export_tools(layout, context)
             

@@ -2,8 +2,9 @@ import bpy
 import bmesh
 from mathutils import Matrix, Vector
 
-
+############################################################################
 #=========================QUICK LATTICE BASE===========================
+############################################################################
 class quick_lattice_base(bpy.types.Operator):
     bl_idname = "object.quick_lattice_base"
     bl_label = "Quick Lattice"
@@ -238,7 +239,7 @@ class quick_lattice_base(bpy.types.Operator):
             
             
         #####################################
-        #NOT IN EDIT MODE
+        #NOT IN EDIT MODE OR OBJECT MODE
         #####################################   
         #Not in edit or object mode
         else:
@@ -246,25 +247,5 @@ class quick_lattice_base(bpy.types.Operator):
             return {"CANCELLED"}
         
                
-        
-
-############################################################################
-#=========================EXTRA QUICK LATTICE===========================
-############################################################################
-
-#Planned feature, still WIP
-
-class fast_quick_lattice(bpy.types.Operator):
-    bl_idname = "object.fast_quick_lattice"
-    bl_label = "EXTRA Quick Lattice"
-    bl_description = "Quickly create a lattice that covers the selection. Works in edit or object mode, and applies automatically when edit stops. Better for quick iterations and changes,offering a faster, but destructive workflow"
-    bl_options = {"REGISTER", "UNDO"}
-
-    def execute(self, context):
-        print("test")
-        
-        props=context.scene.gm_props
-        
-        
         
         

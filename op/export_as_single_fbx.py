@@ -1,5 +1,6 @@
 import bpy
 import os
+from mathutils import Vector
 
 class single_file_exporter(bpy.types.Operator):
     bl_idname = "object.export_as_individual_files"
@@ -39,6 +40,13 @@ class single_file_exporter(bpy.types.Operator):
         
         #=====================Prepare to export(In the future, will improve this section)=====================     
         objects_to_export = []
+        #Prepare prefix and suffix
+        prefix_base = settings.mesh_export_name_prefix.strip()
+        suffix_base = settings.mesh_export_name_suffix.strip()
+        
+        prefix = f"{prefix_base}_" if prefix_base else ""
+        suffix = f"_{suffix_base}" if suffix_base else ""
+        
         
         for obj in selected_meshes:
             objects_to_export.append(obj)
@@ -52,13 +60,23 @@ class single_file_exporter(bpy.types.Operator):
         ####################FBX EXPORTER####################
         if settings.export_formats_selection == 'FBX':
             for obj in objects_to_export:
+                previous_position=None
+                
+                #Select only 1 mesh and make it active
+                bpy.ops.object.select_all(action="DESELECT")
                 obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj
                 
                 #Prepare the name
-                file_name = f"{obj.name}.fbx"
+                file_name = f"{prefix}{obj.name}{suffix}.fbx"
                 #Prepare full export path
                 full_export_path = os.path.join(export_path, file_name)
                 
+                #Check if mesh is on 0,0,0. If not, save position and move it
+                if settings.exporter_move_to_0 == True and obj.location != Vector((0.0, 0.0, 0.0)):
+                    previous_position = obj.location.copy()
+                    obj.location=Vector((0.0, 0.0, 0.0))
+                    
                 #fbx export
                 bpy.ops.export_scene.fbx(
                     #Properties
@@ -85,16 +103,30 @@ class single_file_exporter(bpy.types.Operator):
                     use_custom_props=True,
                 )
                 
+                #Restore position if needed
+                if previous_position:
+                    obj.location=previous_position
+                
                 obj.select_set(False)
         
         ################GLTF EXPORTER#######################
         if settings.export_formats_selection == 'GLTF':
             for obj in objects_to_export:
+                previous_position=None
+                
+                #Select only 1 mesh and make it active
+                bpy.ops.object.select_all(action="DESELECT")
                 obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj
                 
                 #Prepare name
-                file_name = f"{obj.name}.gltf"
+                file_name = f"{prefix}{obj.name}{suffix}.gltf"
                 full_export_path = os.path.join(export_path, file_name)
+                
+                #Check if mesh is on 0,0,0. If not, save position and move it
+                if settings.exporter_move_to_0 == True and obj.location != Vector((0.0, 0.0, 0.0)):
+                    previous_position = obj.location.copy()
+                    obj.location=Vector((0.0, 0.0, 0.0))
                 
                 #gltf export
                 bpy.ops.export_scene.gltf(
@@ -102,7 +134,7 @@ class single_file_exporter(bpy.types.Operator):
                     filepath=full_export_path,
                     check_existing=False,
                     use_selection=True,
-                    export_use_gltfpack=settings.use_gltfpack_compression,
+                    export_draco_mesh_compression_enable=settings.use_draco_compression,
                     export_format=settings.export_format,
                     export_materials=settings.export_gltf_materials,
                     export_vertex_color=settings.export_vertex_color,
@@ -124,6 +156,9 @@ class single_file_exporter(bpy.types.Operator):
                     export_extras=True,
                 )
                 
+                #Restore position if needed
+                if previous_position:
+                    obj.location=previous_position
                 
                 obj.select_set(False)
         
@@ -133,11 +168,21 @@ class single_file_exporter(bpy.types.Operator):
         ################OBJ EXPORTER#####################
         if settings.export_formats_selection == 'OBJ':
             for obj in objects_to_export:
+                previous_position=None
+                
+                #Select only 1 mesh and make it active
+                bpy.ops.object.select_all(action="DESELECT")
                 obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj
                 
                 #Prepare name
-                file_name = f"{obj.name}.obj"
+                file_name = f"{prefix}{obj.name}{suffix}.obj"
                 full_export_path = os.path.join(export_path, file_name)
+                
+                #Check if mesh is on 0,0,0. If not, save position and move it
+                if settings.exporter_move_to_0 == True and obj.location != Vector((0.0, 0.0, 0.0)):
+                    previous_position = obj.location.copy()
+                    obj.location=Vector((0.0, 0.0, 0.0))
                 
                 #obj export
                 bpy.ops.wm.obj_export(
@@ -161,10 +206,11 @@ class single_file_exporter(bpy.types.Operator):
                     export_object_groups=False,
                     export_material_groups=False,
                     export_vertex_groups=False,
-                    
-                
                 )
                 
+                #Restore position if needed
+                if previous_position:
+                    obj.location=previous_position
                 
                 obj.select_set(False)
         

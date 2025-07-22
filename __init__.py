@@ -4,6 +4,7 @@ import importlib
 import os
 import traceback
 
+
 #Import other modules
 from . import ui
 from . import op
@@ -14,7 +15,8 @@ from .ui.ui_draw import GM_tools_main_panel
 #OP Classes import
 from .op.quick_pivot import quick_pivot_to_selection
 from .op.export_as_single_fbx import single_file_exporter
-from .op.quick_lattice import fast_quick_lattice, quick_lattice_base
+from .op.quick_lattice import quick_lattice_base
+from .op.materials_quick_vertex_color import quick_random_vertex_color
 
 
 
@@ -22,7 +24,7 @@ from .op.quick_lattice import fast_quick_lattice, quick_lattice_base
 bl_info = {
     "name" : "GM's Utility Tools Panel",
     "author" : "Gonzalo Mundi",
-    "version" : (0,1),
+    "version" : (0,2),
     "blender" : (4,2,0),
     "location" : "View3D > Sidebar",
     "description" : "Adds a viewport panel with different tools I use for my workflow",
@@ -39,6 +41,7 @@ class GM_Addon_Properties(bpy.types.PropertyGroup):
         name="GM Tabs",
         items=[
             ('MODELING', "Modeling", "Modeling Tools"),
+            ('MATERIALS', "Materials", "Materials Tools"),
             ('EXPORT', "Export", "Export Tools"),
         ],
         default="MODELING"
@@ -106,6 +109,26 @@ class export_formats(bpy.types.PropertyGroup):
         default=False
     )
     
+    exporter_move_to_0: BoolProperty(
+        name="Move to 0,0,0 position",
+        description="Move every mesh to the 0,0,0 position, based on it's pivot point(Only while exporting, then it will recover the previous mesh position",
+        default=True
+    )
+    
+    mesh_export_name_suffix: StringProperty(
+        name="Suffix",
+        description="Write a Suffix to add it after all the meshes name(not mandatory, leave blank for not adding anything",
+        subtype="NONE",
+        default=""
+    )
+    
+    mesh_export_name_prefix: StringProperty(
+        name="Prefix",
+        description="Write a Prefix to add it before all meshes names(not mandatory, leave blank for not adding anything",
+        subtype="NONE",
+        default=""
+    
+    )
     
 
 ##########################FBX ONLY OPTIONS##########################
@@ -187,9 +210,9 @@ class export_formats(bpy.types.PropertyGroup):
 
 
 ##########################GLTF ONLY OPTIONS##########################
-    use_gltfpack_compression: BoolProperty(
-        name="Use GLTFPack Compression",
-        description="Use gltfpack to simplify the mesh",
+    use_draco_compression: BoolProperty(
+        name="Use Draco Compression",
+        description="Use draco to simplify the mesh",
         default=False
     )
     
@@ -270,15 +293,16 @@ class export_formats(bpy.types.PropertyGroup):
     )
 
 
-
+########################################################################
 #========================CLASSES TO REGISTER========================
+########################################################################
 classes = (
     GM_Addon_Properties, #Should be first
     export_formats, 
     single_file_exporter,
     quick_pivot_to_selection,
     quick_lattice_base,
-    fast_quick_lattice,
+    quick_random_vertex_color,
     #Main panel should be last
     GM_tools_main_panel,
 )
