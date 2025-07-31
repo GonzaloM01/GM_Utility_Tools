@@ -2,7 +2,6 @@ import bpy
 import random
 import mathutils
 
-
 #Use MATHUTILS and RANDOM to create a random vector
 def create_random_color():
     r_value = random.random()
